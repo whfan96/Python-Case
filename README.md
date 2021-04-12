@@ -1,8 +1,11 @@
 # Python-Case
 
 ## environment
+
 Python Version: 3.8.7
+
 ---
+
 astroid==2.4.2
 colorama==0.4.4
 isort==5.7.0
