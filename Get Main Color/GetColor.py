@@ -2,7 +2,7 @@ from cv2 import cv2
 import numpy as np
 import collections
 
-imageFile = input("請輸入圖片完整路徑：")
+imageFile = input("Please enter the full path of the picture: ")
 frame = cv2.imread(imageFile)
 
 def getColorList():
@@ -16,7 +16,7 @@ def getColorList():
     color_list = []
     color_list.append(np.array([0, 0, 46]))  # lower_gray
     color_list.append(np.array([180, 43, 220]))  # upper_gray
-    dict['gray']=color_list
+    dict['gray'] = color_list
     # 白色
     color_list = []
     color_list.append(np.array([0, 0, 221]))  # lower_white
@@ -26,7 +26,7 @@ def getColorList():
     color_list = []
     color_list.append(np.array([156, 43, 46]))  # lower_red
     color_list.append(np.array([180, 255, 255]))  # upper_red
-    dict['red']=color_list
+    dict['red'] = color_list
     # 红色2
     color_list = []
     color_list.append(np.array([0, 43, 46]))  # lower_red
@@ -65,24 +65,26 @@ def getColorList():
 
     return dict
 
-def getColor(imageFile):
-    hsv = cv2.cvtColor(imageFile,cv2.COLOR_BGR2HSV)
+
+def getColor(image):
+    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     maxsum = -100
     color = None
     color_dict = getColorList()
     for d in color_dict:
-        mask = cv2.inRange(hsv,color_dict[d][0],color_dict[d][1])
+        mask = cv2.inRange(hsv, color_dict[d][0], color_dict[d][1])
         # cv2.imwrite(d+'.png',mask)
         binary = cv2.threshold(mask, 127, 255, cv2.THRESH_BINARY)[1]
-        binary = cv2.dilate(binary,None,iterations=2)
-        cnts = cv2.findContours(binary.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[0]
+        binary = cv2.dilate(binary, None, iterations=2)
+        cnts = cv2.findContours(
+            binary.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
         sum = 0
         for c in cnts:
-            sum+=cv2.contourArea(c)
-        if sum > maxsum :
+            sum += cv2.contourArea(c)
+        if sum > maxsum:
             maxsum = sum
             color = d
     return color
 
 color = getColor(frame)
-print("主要顏色："+color)
+print("主要顏色：" + color)
